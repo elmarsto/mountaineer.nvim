@@ -1,6 +1,7 @@
 local pickers = require "telescope.pickers"
 local entry_display = require "telescope.pickers.entry_display"
 local finders = require "telescope.finders"
+local previewers = require "telescope.previewers"
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 local conf = require("telescope.config").values
@@ -50,10 +51,16 @@ local himalaya = function(opts)
       end)
       return true
     end,
+    previewer = previewers.new_termopen_previewer {
+      get_command = function(entry)
+        print(vim.inspect(entry))
+        return { "himalaya", "read", entry.value }
+      end
+    }
   }):find()
 end
 
 -- to execute the function
-himalaya(require("telescope.themes").get_ivy())
+-- himalaya(require("telescope.themes").get_ivy())
 
--- return himalaya
+return himalaya
